@@ -54,7 +54,23 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "itens": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "orderId"
+                  ]
+                },
+                "to": {
+                  "model": "OrderItem",
+                  "namespace": "orders"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "createdAt": {

@@ -315,7 +315,8 @@ export namespace Models {
     id: CodecTypes['pg/text@1']['output'];
     status: 'PENDING' | 'PROCESSING' | 'FAILED' | 'CANCELLED' | 'CONFIRMED' | 'COMPLETED';
     updateAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-    readonly [RelationKeys]?: never;
+    itens: orders_OrderItem[];
+    readonly [RelationKeys]?: 'itens';
   };
   export type orders_OrderItem = {
     id: CodecTypes['pg/text@1']['output'];
@@ -515,7 +516,19 @@ type ContractBase = Omit<
                 };
               };
             };
-            readonly relations: Record<string, never>;
+            readonly relations: {
+              readonly itens: {
+                readonly to: {
+                  readonly namespace: 'orders' & NamespaceId;
+                  readonly model: 'OrderItem';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['orderId'];
+                };
+              };
+            };
             readonly storage: {
               readonly table: 'orders';
               readonly namespaceId: 'orders';

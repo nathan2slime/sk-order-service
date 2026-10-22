@@ -16,19 +16,20 @@ namespace orders {
 
     createdAt DateTime             @default(now())
     updateAt  temporal.updatedAt()
+    itens     OrderItem[]
 
     @@map("orders")
   }
 
   model OrderItem {
-    id        String @id @default(cuid(2))
+    id       String @id @default(cuid(2))
 
-    order     Order  @relation(fields: [orderId], references: [id])
-    orderId   String
+    order    Order  @relation(fields: [orderId], references: [id])
+    orderId  String
 
-    price     Float
-    quantity  Int
-    skuId String
+    price    Float
+    quantity Int
+    skuId    String
 
     @@map("order_itens")
   }

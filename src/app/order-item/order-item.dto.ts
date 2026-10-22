@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNumber, IsPositive, Validate } from 'class-validator';
+
 import { IsCuid } from '~/utils/is-cuid.validator';
 
 export class CreateOrderItemDto {
