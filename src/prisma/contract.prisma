@@ -1,0 +1,35 @@
+// use prisma-8
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  FAILED
+  CANCELLED
+  CONFIRMED
+  COMPLETED
+}
+
+namespace orders {
+  model Order {
+    id        String               @id @default(cuid(2))
+
+    status    OrderStatus          @default(PENDING)
+
+    createdAt DateTime             @default(now())
+    updateAt  temporal.updatedAt()
+
+    @@map("orders")
+  }
+
+  model OrderItem {
+    id        String @id @default(cuid(2))
+
+    order     Order  @relation(fields: [orderId], references: [id])
+    orderId   String
+
+    price     Float
+    quantity  Int
+    skuId String
+
+    @@map("order_itens")
+  }
+}

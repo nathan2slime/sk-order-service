@@ -1,0 +1,7 @@
+node_modules
+dist
+.rstack
+
+.env.production
+.env.local
+.env

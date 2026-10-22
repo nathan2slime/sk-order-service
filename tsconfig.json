@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "types": ["@rspack/core/module", "node"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strict": false,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "rootDir": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "outDir": "./dist",
+    "incremental": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "prisma.config.ts", "scripts", "src/app.module.ts"]
+}
