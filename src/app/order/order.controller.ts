@@ -12,6 +12,6 @@ export class OrderController {
   async create(@Res() res: Response, @Body() body: CreateOrderDto) {
     const item = await this.orderService.create(body);
 
-    res.status(HttpStatus.CREATED).json();
+    res.status(HttpStatus.CREATED).json(item);
   }
 }
