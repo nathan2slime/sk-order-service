@@ -11,6 +11,10 @@
     "orders": {
       "model": "Order",
       "namespace": "orders"
+    },
+    "outbox": {
+      "model": "Outbox",
+      "namespace": "orders"
     }
   },
   "domain": {
@@ -46,7 +50,7 @@
                   "plane": "domain"
                 }
               },
-              "updateAt": {
+              "updatedAt": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/timestamptz-temporal@1",
@@ -74,7 +78,7 @@
             "storage": {
               "fields": {
                 "createdAt": {
-                  "column": "createdAt"
+                  "column": "created_at"
                 },
                 "id": {
                   "column": "id"
@@ -82,8 +86,8 @@
                 "status": {
                   "column": "status"
                 },
-                "updateAt": {
-                  "column": "updateAt"
+                "updatedAt": {
+                  "column": "updated_at"
                 }
               },
               "namespaceId": "orders",
@@ -152,7 +156,7 @@
                   "column": "id"
                 },
                 "orderId": {
-                  "column": "orderId"
+                  "column": "order_id"
                 },
                 "price": {
                   "column": "price"
@@ -166,6 +170,84 @@
               },
               "namespaceId": "orders",
               "table": "order_itens"
+            }
+          },
+          "Outbox": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "eventId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "orderId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "publishedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "order": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "orderId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Order",
+                  "namespace": "orders"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "eventId": {
+                  "column": "event_id"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "orderId": {
+                  "column": "order_id"
+                },
+                "publishedAt": {
+                  "column": "published_at"
+                }
+              },
+              "namespaceId": "orders",
+              "table": "outbox"
             }
           }
         }
@@ -218,7 +300,7 @@
                   "dataType": "pg/text",
                   "nullable": false
                 },
-                "orderId": {
+                "order_id": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
                   "nullable": false
@@ -242,11 +324,11 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "order_itens_orderId_idx_d284871b"
+                    "name": "order_itens_order_id_idx_39ad19ad"
                   },
                   "source": {
                     "columns": [
-                      "orderId"
+                      "order_id"
                     ],
                     "namespaceId": "orders",
                     "tableName": "order_itens"
@@ -263,10 +345,10 @@
               "indexes": [
                 {
                   "columns": [
-                    "orderId"
+                    "order_id"
                   ],
-                  "name": "order_itens_orderId_idx_d284871b",
-                  "prefix": "order_itens_orderId_idx",
+                  "name": "order_itens_order_id_idx_39ad19ad",
+                  "prefix": "order_itens_order_id_idx",
                   "unique": false
                 }
               ],
@@ -286,7 +368,7 @@
                 }
               ],
               "columns": {
-                "createdAt": {
+                "created_at": {
                   "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
                   "default": {
@@ -315,7 +397,7 @@
                     "plane": "storage"
                   }
                 },
-                "updateAt": {
+                "updated_at": {
                   "codecId": "pg/timestamptz-temporal@1",
                   "dataType": "pg/timestamptz",
                   "nullable": false
@@ -323,6 +405,76 @@
               },
               "foreignKeys": [],
               "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "outbox": {
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "event_id": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "order_id": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "published_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "dataType": "pg/timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "index": {
+                    "name": "outbox_order_id_idx_39ad19ad"
+                  },
+                  "source": {
+                    "columns": [
+                      "order_id"
+                    ],
+                    "namespaceId": "orders",
+                    "tableName": "outbox"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "orders",
+                    "tableName": "orders"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "order_id"
+                  ],
+                  "name": "outbox_order_id_idx_39ad19ad",
+                  "prefix": "outbox_order_id_idx",
+                  "unique": false
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -356,10 +508,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "47131bc5bbe56a8f3198c7ed1698fec817646d39c0116c6a1da07b0d815472fb"
+    "storageHash": "8f8be4a0605b9b519d229768b60e69162324d40b5eef2125f2c3c19621d79da8"
   },
   "execution": {
-    "executionHash": "4e0aeeacc44ba909b6d6f9b90f9207635f6853805428de8cf0cf467863dce11d",
+    "executionHash": "61a3aa6af9dfef887c10f6e212e6cd7a3e01a2aec7a5ceedaa919b9aa88e6868",
     "mutations": {
       "defaults": [
         {
@@ -395,7 +547,18 @@
           },
           "ref": {
             "entry": "orders",
-            "field": "updateAt",
+            "field": "updated_at",
+            "namespace": "orders"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "cuid2",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "outbox",
+            "field": "id",
             "namespace": "orders"
           }
         }

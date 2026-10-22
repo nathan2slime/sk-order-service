@@ -1,4 +1,5 @@
 // use prisma-8
+
 enum OrderStatus {
   PENDING
   PROCESSING
@@ -14,8 +15,8 @@ namespace orders {
 
     status    OrderStatus          @default(PENDING)
 
-    createdAt DateTime             @default(now())
-    updateAt  temporal.updatedAt()
+    createdAt DateTime             @map("created_at") @default(now())
+    updatedAt temporal.updatedAt() @map("updated_at")
     itens     OrderItem[]
 
     @@map("orders")
@@ -25,12 +26,26 @@ namespace orders {
     id       String @id @default(cuid(2))
 
     order    Order  @relation(fields: [orderId], references: [id])
-    orderId  String
+    orderId  String @map("order_id")
 
     price    Float
     quantity Int
     skuId    String
 
     @@map("order_itens")
+  }
+
+  model Outbox {
+    id          String   @id @default(cuid(2))
+
+    orderId     String   @map("order_id")
+    eventId     String   @map("event_id")
+
+    order       Order    @relation(fields: [orderId], references: [id])
+
+    createdAt   DateTime @default(now()) @map("created_at")
+    publishedAt DateTime @map("published_at") @map("outbox")
+
+    @@map("outbox")
   }
 }

@@ -18,9 +18,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'47131bc5bbe56a8f3198c7ed1698fec817646d39c0116c6a1da07b0d815472fb'>;
+  StorageHashBase<'8f8be4a0605b9b519d229768b60e69162324d40b5eef2125f2c3c19621d79da8'>;
 export type ExecutionHash =
-  ExecutionHashBase<'4e0aeeacc44ba909b6d6f9b90f9207635f6853805428de8cf0cf467863dce11d'>;
+  ExecutionHashBase<'61a3aa6af9dfef887c10f6e212e6cd7a3e01a2aec7a5ceedaa919b9aa88e6868'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -239,7 +239,7 @@ export type FieldOutputTypes = {
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly status:
         'PENDING' | 'PROCESSING' | 'FAILED' | 'CANCELLED' | 'CONFIRMED' | 'COMPLETED';
-      readonly updateAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
     readonly OrderItem: {
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -247,6 +247,13 @@ export type FieldOutputTypes = {
       readonly price: CodecTypes['pg/float8@1']['output'];
       readonly quantity: CodecTypes['pg/int4@1']['output'];
       readonly skuId: CodecTypes['pg/text@1']['output'];
+    };
+    readonly Outbox: {
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly eventId: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly orderId: CodecTypes['pg/text@1']['output'];
+      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
   };
   readonly public: Record<string, never>;
@@ -258,7 +265,7 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly status:
         'PENDING' | 'PROCESSING' | 'FAILED' | 'CANCELLED' | 'CONFIRMED' | 'COMPLETED';
-      readonly updateAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly OrderItem: {
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -267,6 +274,13 @@ export type FieldInputTypes = {
       readonly quantity: CodecTypes['pg/int4@1']['input'];
       readonly skuId: CodecTypes['pg/text@1']['input'];
     };
+    readonly Outbox: {
+      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly eventId: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly orderId: CodecTypes['pg/text@1']['input'];
+      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
   };
   readonly public: Record<string, never>;
 };
@@ -274,17 +288,24 @@ export type StorageColumnTypes = {
   readonly orders: {
     readonly order_itens: {
       readonly id: CodecTypes['pg/text@1']['output'];
-      readonly orderId: CodecTypes['pg/text@1']['output'];
+      readonly order_id: CodecTypes['pg/text@1']['output'];
       readonly price: CodecTypes['pg/float8@1']['output'];
       readonly quantity: CodecTypes['pg/int4@1']['output'];
       readonly skuId: CodecTypes['pg/text@1']['output'];
     };
     readonly orders: {
-      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly status:
         'PENDING' | 'PROCESSING' | 'FAILED' | 'CANCELLED' | 'CONFIRMED' | 'COMPLETED';
-      readonly updateAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
+    readonly outbox: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly event_id: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly order_id: CodecTypes['pg/text@1']['output'];
+      readonly published_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
   };
   readonly public: {};
@@ -293,17 +314,24 @@ export type StorageColumnInputTypes = {
   readonly orders: {
     readonly order_itens: {
       readonly id: CodecTypes['pg/text@1']['input'];
-      readonly orderId: CodecTypes['pg/text@1']['input'];
+      readonly order_id: CodecTypes['pg/text@1']['input'];
       readonly price: CodecTypes['pg/float8@1']['input'];
       readonly quantity: CodecTypes['pg/int4@1']['input'];
       readonly skuId: CodecTypes['pg/text@1']['input'];
     };
     readonly orders: {
-      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly status:
         'PENDING' | 'PROCESSING' | 'FAILED' | 'CANCELLED' | 'CONFIRMED' | 'COMPLETED';
-      readonly updateAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+    };
+    readonly outbox: {
+      readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly event_id: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly order_id: CodecTypes['pg/text@1']['input'];
+      readonly published_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
   };
   readonly public: {};
@@ -314,7 +342,7 @@ export namespace Models {
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     id: CodecTypes['pg/text@1']['output'];
     status: 'PENDING' | 'PROCESSING' | 'FAILED' | 'CANCELLED' | 'CONFIRMED' | 'COMPLETED';
-    updateAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     itens: orders_OrderItem[];
     readonly [RelationKeys]?: 'itens';
   };
@@ -327,12 +355,22 @@ export namespace Models {
     order: orders_Order;
     readonly [RelationKeys]?: 'order';
   };
+  export type orders_Outbox = {
+    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    eventId: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/text@1']['output'];
+    orderId: CodecTypes['pg/text@1']['output'];
+    publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    order: orders_Order;
+    readonly [RelationKeys]?: 'order';
+  };
 }
 
 export declare const models: {
   orders: {
     Order: Models.orders_Order;
     OrderItem: Models.orders_OrderItem;
+    Outbox: Models.orders_Outbox;
   };
   public: {};
 };
@@ -363,7 +401,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly orderId: {
+                readonly order_id: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -392,9 +430,9 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'order_itens_orderId_idx_d284871b';
-                  readonly prefix: 'order_itens_orderId_idx';
-                  readonly columns: readonly ['orderId'];
+                  readonly name: 'order_itens_order_id_idx_39ad19ad';
+                  readonly prefix: 'order_itens_order_id_idx';
+                  readonly columns: readonly ['order_id'];
                   readonly unique: false;
                 },
               ];
@@ -403,7 +441,7 @@ type ContractBase = Omit<
                   readonly source: {
                     readonly namespaceId: 'orders' & NamespaceId;
                     readonly tableName: 'order_itens';
-                    readonly columns: readonly ['orderId'];
+                    readonly columns: readonly ['order_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'orders' & NamespaceId;
@@ -415,7 +453,7 @@ type ContractBase = Omit<
             };
             readonly orders: {
               columns: {
-                readonly createdAt: {
+                readonly created_at: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-temporal@1';
                   readonly nullable: false;
@@ -438,7 +476,7 @@ type ContractBase = Omit<
                   };
                   readonly many: false;
                 };
-                readonly updateAt: {
+                readonly updated_at: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-temporal@1';
                   readonly nullable: false;
@@ -449,6 +487,65 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [];
               foreignKeys: readonly [];
+            };
+            readonly outbox: {
+              columns: {
+                readonly created_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly event_id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly order_id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly published_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'outbox_order_id_idx_39ad19ad';
+                  readonly prefix: 'outbox_order_id_idx';
+                  readonly columns: readonly ['order_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'orders' & NamespaceId;
+                    readonly tableName: 'outbox';
+                    readonly columns: readonly ['order_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'orders' & NamespaceId;
+                    readonly tableName: 'orders';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
             };
           };
         };
@@ -486,6 +583,7 @@ type ContractBase = Omit<
       readonly model: 'OrderItem';
     };
     readonly orders: { readonly namespace: 'orders' & NamespaceId; readonly model: 'Order' };
+    readonly outbox: { readonly namespace: 'orders' & NamespaceId; readonly model: 'Outbox' };
   };
   readonly domain: {
     readonly namespaces: {
@@ -508,7 +606,7 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly updateAt: {
+              readonly updatedAt: {
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
@@ -533,10 +631,10 @@ type ContractBase = Omit<
               readonly table: 'orders';
               readonly namespaceId: 'orders';
               readonly fields: {
-                readonly createdAt: { readonly column: 'createdAt' };
+                readonly createdAt: { readonly column: 'created_at' };
                 readonly id: { readonly column: 'id' };
                 readonly status: { readonly column: 'status' };
-                readonly updateAt: { readonly column: 'updateAt' };
+                readonly updatedAt: { readonly column: 'updated_at' };
               };
             };
           };
@@ -582,10 +680,65 @@ type ContractBase = Omit<
               readonly namespaceId: 'orders';
               readonly fields: {
                 readonly id: { readonly column: 'id' };
-                readonly orderId: { readonly column: 'orderId' };
+                readonly orderId: { readonly column: 'order_id' };
                 readonly price: { readonly column: 'price' };
                 readonly quantity: { readonly column: 'quantity' };
                 readonly skuId: { readonly column: 'skuId' };
+              };
+            };
+          };
+          readonly Outbox: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly eventId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly orderId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly publishedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly order: {
+                readonly to: {
+                  readonly namespace: 'orders' & NamespaceId;
+                  readonly model: 'Order';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['orderId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'outbox';
+              readonly namespaceId: 'orders';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly eventId: { readonly column: 'event_id' };
+                readonly id: { readonly column: 'id' };
+                readonly orderId: { readonly column: 'order_id' };
+                readonly publishedAt: { readonly column: 'published_at' };
               };
             };
           };
@@ -672,7 +825,15 @@ type ContractBase = Omit<
           readonly onUpdate: { readonly id: 'instantNow'; readonly kind: 'generator' };
           readonly ref: {
             readonly entry: 'orders';
-            readonly field: 'updateAt';
+            readonly field: 'updated_at';
+            readonly namespace: 'orders';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'cuid2'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'outbox';
+            readonly field: 'id';
             readonly namespace: 'orders';
           };
         },
