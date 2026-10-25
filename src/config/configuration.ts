@@ -1,6 +1,7 @@
 const config = () => ({
   PORT: parseInt(process.env.PORT ?? '3000', 10),
   DATABASE_URL: process.env.DATABASE_URL,
+  RABBITMQ_URL: process.env.RABBITMQ_URL
 });
 
 export default config;

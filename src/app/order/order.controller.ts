@@ -1,14 +1,14 @@
-import { Body, Controller, Get, HttpStatus, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
+import type { Response } from "express";
 
-import { CreateOrderDto } from '~/app/order/order.dto';
-import { OrderService } from '~/app/order/order.service';
+import { CreateOrderDto } from "~/app/order/order.dto";
+import { OrderService } from "~/app/order/order.service";
 
-@Controller('order')
+@Controller("order")
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @Get('create')
+  @Post("create")
   async create(@Res() res: Response, @Body() body: CreateOrderDto) {
     const item = await this.orderService.create(body);
 

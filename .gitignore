@@ -5,3 +5,5 @@ dist
 .env.production
 .env.local
 .env
+
+generated

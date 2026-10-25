@@ -1,11 +1,14 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 
-import { OrderItemModule } from '~/app/order-item/order-item.module';
-import { OrderService } from '~/app/order/order.service';
+import { OrderController } from "~/app/order/order.controller";
+import { OrderMessaging } from "~/app/order/order.messaing";
+import { OrderRepository } from "~/app/order/order.repository";
+import { OrderService } from "~/app/order/order.service";
+import { RabbitMQModule } from "~/rabbitmq/rabbitmq.module";
 
 @Module({
-  imports: [OrderItemModule],
-  controllers: [],
-  providers: [OrderService],
+  imports: [RabbitMQModule],
+  controllers: [OrderController],
+  providers: [OrderService, OrderRepository, OrderMessaging],
 })
 export class OrderModule {}
